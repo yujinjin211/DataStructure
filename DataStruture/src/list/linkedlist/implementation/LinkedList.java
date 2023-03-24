@@ -103,4 +103,71 @@ public class LinkedList {
 		
 		return str + "]";
 	}
+	
+	//처음 노드 삭제하기
+	public Object removeFirst() {
+		//temp에 head의 값을 저장하고, 원래 head는 head가 가리키던 다음 노드의 값을 저장한다.
+		Node temp = head;
+		head = head.next;
+		
+		Object returnData = temp.data; //반환할 값인 returnData에는 temp의 값을 저장한다.
+		temp = null; //temp를 비운다.
+		size--; //노드를 삭제했으므로 리스트의 사이즈를 줄인다.
+		
+		return returnData;
+	}
+	
+	//중간 노드 삭제하기
+	public Object remove(int k) {
+		if(k == 0) {
+			return removeFirst();
+		}
+		//삭제할 노드의 이전 노드를 temp에 저장한다.
+		Node temp = node(k-1); //node 메소드는 특정 위치의 노드 값을 찾아준다.(위에서 만들었음)
+		//삭제할 노드를 todoDeleted에 저장한다. 
+		Node todoDeleted = temp.next;
+		//바로 todoDeleted를 삭제하지 않는다. todoDeleted의 다음 노드를 temp(todoDeleted의 이전 노드)의 다음 노드가 되도록 한다.
+		temp.next = temp.next.next;
+		Object returnData = todoDeleted.data;
+		
+		//만약 삭제하려는 노드가 맨 마지막 노드라면(tail이라면) temp를 맨 마지막 노드로 지정해줘야한다.
+		if(todoDeleted == tail) {
+			tail = temp;
+		}
+		//todoDeleted의 값을 null로 바꾼다.
+		todoDeleted = null;
+		size--; //리스트의 사이즈를 감소시킨다.
+		
+		return returnData;
+	}
+	
+	//맨 마지막 노드 삭제하기
+	public Object removeLast() {
+		return remove(size-1);
+	}
+	
+	//엘리먼트의 크기 알아내기
+	public int size() {
+		return size;
+	}
+	
+	//특정 위치의 엘리먼트 가져오기
+	public Object get(int k) {
+		Node temp = node(k);
+		return temp.data;
+	}
+	
+	//특정한 값을 가진 엘리먼트의 인덱스 값 알아내기
+	public int indexOf(Object data) {
+		Node temp = head;
+		int index = 0;
+		while(temp.data != data) {
+			temp = temp.next;
+			index++;
+			if(temp == null) {
+				return -1;
+			}
+		}
+		return index;
+	}
 }

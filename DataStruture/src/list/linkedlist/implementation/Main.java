@@ -11,11 +11,9 @@ public class Main {
 //		numbers.addFirst(10);
 		
 		//리스트의 끝에 데이터 추가
-		numbers.addLast(10); //0
-		numbers.addLast(20); //1
-		numbers.addLast(30); //2
-		numbers.add(1, 15);
-		System.out.println(numbers);
+		numbers.addLast(10);
+		numbers.addLast(20);
+		numbers.addLast(30);
 	}
 
 }
