@@ -159,15 +159,69 @@ public class LinkedList {
 	
 	//특정한 값을 가진 엘리먼트의 인덱스 값 알아내기
 	public int indexOf(Object data) {
+		//temp를 head로 지정한다.
 		Node temp = head;
 		int index = 0;
-		while(temp.data != data) {
+		//찾고자 하는 노드가 몇 번째 인덱스에 있는지 하나하나 찾는다.
+		while(temp.data != data) { //temp에 담긴 data가 넘겨받은 data와 같으면 while문을 빠져나온다.
 			temp = temp.next;
 			index++;
 			if(temp == null) {
-				return -1;
+				return -1; //리스트에 없는 값이면 -1을 반환한다.
 			}
 		}
 		return index;
 	}
+	
+	//Iterator 객체 생성과 next 메소드
+	public ListIterator listIterator() {
+		return new ListIterator();
+	}
+	
+	class ListIterator {
+		
+		private Node next;
+		private Node lastReturned;
+		private int nextIndex;
+		
+		public ListIterator() {
+			next = head; //ListIterator 객체가 생성되면 next는 head를 가리킨다.
+		}
+		
+		public Object next() { //next() 메소드를 호출하면
+			lastReturned = next; //lastReturned의 값이 next가 되고
+			next = next.next; //원래의 next는 현재 노드의 다음 노드를 가리키게 된다.
+			nextIndex++;
+			return lastReturned.data;
+		}
+		
+		public boolean hasNext() {
+			return nextIndex < size;
+		}
+		
+		public void add(Object input) {
+			Node newNode = new Node(input); //입력받은 값으로 새 노드를 생성한다.
+			
+			if(lastReturned == null) {
+				head = newNode; //새로 만들어진 노드를 head로 지정
+				newNode.next = next; //새 노드가 가리키는 다음 노드의 값으로 next를 지정한다.				
+			} else {
+				lastReturned.next = newNode;
+				newNode.next = next;
+			}
+			
+			lastReturned = newNode;
+			nextIndex++;
+			size++;
+		}
+		
+		public void remove() {
+			if(nextIndex == 0) {
+				throw new IllegalStateException();
+			}
+			LinkedList.this.remove(nextIndex-1);
+			nextIndex--;
+		}
+	}
+	
 }
